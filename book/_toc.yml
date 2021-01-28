@@ -1,0 +1,11 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+- file: introduction
+- file: theory/readme
+  sections:
+    - file: theory/hht
+    - file: theory/memd
+- file: implementation/readme
+  sections:
+    - file: implementation/emd
+    - file: implementation/memd

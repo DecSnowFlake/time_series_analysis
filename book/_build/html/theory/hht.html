@@ -1,0 +1,426 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hilbert-Huang变换 &#8212; 时间序列分析</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="多变量经验模态分解" href="memd.html" />
+    <link rel="prev" title="基础理论知识" href="readme.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  <img src="../_static/logo.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">时间序列分析</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../introduction.html">
+   时间序列分析简介
+  </a>
+ </li>
+</ul>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="readme.html">
+   基础理论知识
+  </a>
+  <ul class="current collapse-ul">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Hilbert-Huang变换
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="memd.html">
+     多变量经验模态分解
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../implementation/readme.html">
+   相关实现
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../implementation/emd.html">
+     经验模态分解
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../implementation/memd.html">
+     MEMD
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/theory/hht.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/theory/hht.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id1">
+   瞬时频率
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#intrinsic-mode-functions">
+   本征模函数（Intrinsic mode functions）
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id2">
+   经验模态分解方法
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id3">
+   分解的完备性和正交性
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-hilbert-spectrum">
+   The Hilbert spectrum
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id4">
+     定性评估时间序列的平稳性
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="hilbert-huang">
+<h1>Hilbert-Huang变换<a class="headerlink" href="#hilbert-huang" title="Permalink to this headline">¶</a></h1>
+<p><strong>非线性非平稳时间序列分析的EMD方法和Hilbert谱方法</strong></p>
+<div class="section" id="id1">
+<h2>瞬时频率<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Hilbert transform: For any artitrary time series, X(t), we can always have its Hibert Transform, Y(t), as</p>
+<div class="math notranslate nohighlight">
+\[
+    Y(t) = \frac{1}{\pi}P.V.\int_{-\infty}^{\infty}\frac{X(t')}{t-t'}dt'
+\]</div>
+<p>With this definition, <span class="math notranslate nohighlight">\(X(t)\)</span> and <span class="math notranslate nohighlight">\(Y(t)\)</span> form the complex conjugate pair, so we can have an analytic signal, <span class="math notranslate nohighlight">\(Z(t)\)</span>, as</p>
+<div class="math notranslate nohighlight">
+\[
+    Z(t) = X(t) + i Y(t)=a(t)e^{i\theta(t)}
+\]</div>
+<p>in which</p>
+<div class="math notranslate nohighlight">
+\[
+    a(t)=[X^2(t)+Y^2(t)]^{1/2},\ \ \theta(t)=\arctan\left(\frac{Y(t)}{X(t)}\right)
+\]</div>
+<p>Then the instantaneous frequency is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+    \omega=\frac{d\theta(t)}{dt}
+\]</div>
+<p>Intrinsic mode function (IMF) for which the instantaneous frequency can be defined everywhere.</p>
+<p>定义瞬时频率的条件：</p>
+<ol class="simple">
+<li></li>
+<li></li>
+<li></li>
+</ol>
+<p>本征模函数与瞬时频率的关系？</p>
+</div>
+<div class="section" id="intrinsic-mode-functions">
+<h2>本征模函数（Intrinsic mode functions）<a class="headerlink" href="#intrinsic-mode-functions" title="Permalink to this headline">¶</a></h2>
+<p>Two conditions:</p>
+<ul class="simple">
+<li></li>
+<li></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>经验模态分解方法<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>Knowing the well-behaved Hilbert transforms of the IMF components is only the starting point.</p>
+<p>这就是一个两重的迭代过程</p>
+</div>
+<div class="section" id="id3">
+<h2>分解的完备性和正交性<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>完备性根据如下公式可以得到保证：</p>
+<div class="math notranslate nohighlight">
+\[
+    X(t) = \sum\limits_{i=1}^{n}c_i + r_n
+\]</div>
+<p>正交性：</p>
+<p>Orthogonality is a requirement only for linear decomposition systems; it would not make phhysical sense for a nonlinear decomposition as in EMD.</p>
+<p>Fortunately, in most cases encountered, the leakage is small.</p>
+</div>
+<div class="section" id="the-hilbert-spectrum">
+<h2>The Hilbert spectrum<a class="headerlink" href="#the-hilbert-spectrum" title="Permalink to this headline">¶</a></h2>
+<p>首先对原始数据进行经验模态分解，得到IMF的各个分量，然后对IMF的各个分量进行Hilbert变换，并计算每个分量的瞬时频率，则可得到原始数据的一个如下展开：</p>
+<div class="math notranslate nohighlight">
+\[
+    X(t)=\sum\limits_{j=1}^{n}a_j(t)exp\left(i\int \omega_j(t)dt\right)
+\]</div>
+<p>这里我们不考虑最后的那个残量，因为它或者是一个单调的趋势函数，或者是一个常数。</p>
+<p>对比Fourier变化：</p>
+<div class="math notranslate nohighlight">
+\[
+    X(t)=\sum\limits_{j=1}^{\infty}a_je^{i\omega_j t}
+\]</div>
+<p><strong>The IMF represents a generalized Fourier expansion. The variable amplitude and the instantaneous frequency have not only greatly improved the efficiency of the expansion,
+but also enabled the expansion to accomodate non-stationary data.</strong></p>
+<p>根据上面的展开，可以得到振幅的时频分布：<span class="math notranslate nohighlight">\(H(\omega,t)\)</span>。如果振幅与能量密度有关系，一般振幅的平方可以用来表示Hilbert能量谱。</p>
+<p>The marginal spectrum:</p>
+<div class="math notranslate nohighlight">
+\[
+    h(\omega) = \int_0^T H(\omega,t)dt
+\]</div>
+<p>The instantaneous energy:</p>
+<div class="math notranslate nohighlight">
+\[
+    IE(t)=\int_{\omega}H^2(\omega,t)d\omega
+\]</div>
+<div class="section" id="id4">
+<h3>定性评估时间序列的平稳性<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>mean marginal spectrum:</p>
+<div class="math notranslate nohighlight">
+\[
+    n(\omega) = \frac{1}{T}h(\omega)
+\]</div>
+<p>the degree of stationarity:</p>
+<div class="math notranslate nohighlight">
+\[
+    DS(\omega) = \frac{1}{T}\int_0^T\left(1-\frac{H(\omega,t)}{n(\omega)}\right)^2dt
+\]</div>
+<p>把平稳性定义成频率的函数是合理的，因为对于某些频率来说可能是非平稳的，但是对于其他的频率分量来说却是平稳的。</p>
+<p>A modified statistical stationary：</p>
+<div class="math notranslate nohighlight">
+\[
+    DSS(\omega, \Delta T)=\frac{1}{T}\int_0^{T}\left(1-\frac{\overline{H(\omega,t)}}{n(\omega)}\right)^2dt
+\]</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "it"
+        },
+        kernelOptions: {
+            kernelName: "it",
+            path: "./theory"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'it'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="readme.html" title="previous page">基础理论知识</a>
+    <a class='right-next' id="next-link" href="memd.html" title="next page">多变量经验模态分解</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Fang Shaofeng<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>
