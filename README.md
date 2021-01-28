@@ -1,6 +1,6 @@
 # book
 
-a tempolate for jupyter-book cookiecutter
+- [Time Series Analysis](https://decsnowflake.github.io/time_series_analysis)
 
 ## Usage
 

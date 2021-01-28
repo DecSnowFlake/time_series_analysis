@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MEMD &#8212; 时间序列分析</title>
+    <title>多变量经验模态分解 &#8212; 时间序列分析</title>
     
   <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -119,13 +119,18 @@
   </a>
   <ul class="current collapse-ul">
    <li class="toctree-l2">
+    <a class="reference internal" href="wavelet.html">
+     小波变换
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="emd.html">
      经验模态分解
     </a>
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     MEMD
+     多变量经验模态分解
     </a>
    </li>
   </ul>
@@ -214,6 +219,20 @@
     <!-- Table of contents -->
     <div class="d-none d-md-block col-md-2 bd-toc show">
         
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tutorial">
+   Tutorial
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
     </div>
 </div>
     <div id="main-content" class="row">
@@ -221,14 +240,23 @@
         
               <div>
                 
-  <div class="section" id="memd">
-<h1>MEMD<a class="headerlink" href="#memd" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="id1">
+<h1>多变量经验模态分解<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>参考链接：</p>
+<ul class="simple">
+<li><p>https://github.com/DecSnowFlake/MEMD-Python-</p></li>
+<li><p>http://www.commsp.ee.ic.ac.uk/~mandic/research/emd.htm</p></li>
+<li><p><a class="reference external" href="https://bitbucket.org/luukko/libeemd/src/master/">libeemd</a></p></li>
+<li><p><a class="reference external" href="https://pyeemd.readthedocs.io/en/master/tutorial.html">tutorials for pyeemd</a></p></li>
+<li><p><a class="reference external" href="https://bitbucket.org/luukko/pyeemd/src/master/">pyeemd</a></p></li>
+</ul>
+<div class="section" id="tutorial">
+<h2>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">reload_ext</span> autoreload
-<span class="o">%</span><span class="k">autoreload</span> 2
-<span class="o">%</span><span class="k">matplotlib</span> inline
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyeemd</span>
 </pre></div>
+</div>
 </div>
 </div>
 </div>

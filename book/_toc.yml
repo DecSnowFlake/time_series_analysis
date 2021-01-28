@@ -7,5 +7,6 @@
     - file: theory/memd
 - file: implementation/readme
   sections:
+    - file: implementation/wavelet
     - file: implementation/emd
     - file: implementation/memd

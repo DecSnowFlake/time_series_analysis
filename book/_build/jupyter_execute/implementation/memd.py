@@ -1,14 +1,22 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # MEMD
+# # 多变量经验模态分解
+
+# 参考链接：
+# 
+# - https://github.com/DecSnowFlake/MEMD-Python-
+# - http://www.commsp.ee.ic.ac.uk/~mandic/research/emd.htm
+# - [libeemd](https://bitbucket.org/luukko/libeemd/src/master/)
+# - [tutorials for pyeemd](https://pyeemd.readthedocs.io/en/master/tutorial.html)
+# - [pyeemd](https://bitbucket.org/luukko/pyeemd/src/master/)
+
+# ## Tutorial
 
 # In[1]:
 
 
-get_ipython().run_line_magic('reload_ext', 'autoreload')
-get_ipython().run_line_magic('autoreload', '2')
-get_ipython().run_line_magic('matplotlib', 'inline')
+import pyeemd
 
 
 # In[ ]:
