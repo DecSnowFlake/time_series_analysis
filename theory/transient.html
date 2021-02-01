@@ -1,0 +1,613 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>瞬态时间序列观测数据的分析方法 &#8212; 时间序列分析</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  <img src="../_static/logo.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">时间序列分析</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../introduction.html">
+   时间序列分析简介
+  </a>
+ </li>
+</ul>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="readme.html">
+   基础理论知识
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="hht.html">
+     Hilbert-Huang变换
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="memd.html">
+     多变量经验模态分解
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="../implementation/readme.html">
+   相关实现
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../implementation/wavelet.html">
+     小波变换
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../implementation/emd.html">
+     经验模态分解
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../implementation/memd.html">
+     多变量经验模态分解
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/theory/transient.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/theory/transient.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id2">
+   时间序列的数据分析
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id3">
+     相关性分析
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#pearson">
+       Pearson相关系数
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id4">
+       显著性检验
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id5">
+       自由度估计
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id6">
+       秩相关系数
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id7">
+       滞后相关系数
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id8">
+     功率谱及时频能量谱分析
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id9">
+       功率谱
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id10">
+       时频能量谱
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id11">
+   常用的时频分析方法
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id12">
+     短时傅里叶变换
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id13">
+     小波变换
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#wigner-ville">
+     Wigner-Ville分布
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#hht">
+   HHT方法原理及步骤
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id14">
+     HHT的基本概念
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id15">
+       瞬时频率
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id16">
+       本征模态函数
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id17">
+     经验模态分解
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id18">
+     集合经验模态分解
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#hilbert">
+     Hilbert谱分析
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id19">
+     HHT尚待解决的问题
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id20">
+       问题一
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id21">
+       问题二
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id22">
+       问题三
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id23">
+   总结
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="id1">
+<h1>瞬态时间序列观测数据的分析方法<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>对于空间和地面观测获取到的时间序列，无论是来自物理测量还是数字建模，面对的都是非线性物理系统。</p>
+<ul class="simple">
+<li><p>针对这些系统，在多数情况下我们都无法直接建立解析数学模型，而只能通过观测或者实验获取它们的连续时间演化数据，并试图从中获取相关的动力学系统信息。</p></li>
+<li><p>同时，实测数据精度的限制和不确定性物理因素，在很大程度上制约着我们对物理量瞬态时间演化数据的理解。</p></li>
+</ul>
+<p>因此，如何找到合适的算法来分析这些瞬态数据，并从中提取有效的时间-频率信息来构建相关参数的预测模型，是空间物理观测研究当前面临的一个重要问题。</p>
+<p>日地空间系统的观测数据不仅在时间上是自相关的，在空间上也是连续的，比如地磁场、行星际磁场、太阳风等离子体密度和温度等。但对于空间场量之间的相关性，到目前为止还没有严格的检验方法，现有的处理手段是</p>
+<ul class="simple">
+<li><p>将空间网格化，通过计算局地的相关系数，判断其置信度，再将同水平的置信区域用等值线或者同样的阴影面积标出，以此来显现空间场量的相关显著性。</p></li>
+</ul>
+<div class="section" id="id2">
+<h2>时间序列的数据分析<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h3>相关性分析<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="pearson">
+<h4>Pearson相关系数<a class="headerlink" href="#pearson" title="Permalink to this headline">¶</a></h4>
+<p>相关系数、方差、协方差和回归系数</p>
+<p>Pearson相关系数能直观地定量描述变量之间的关系，且容易解释，故在实际分析中应用得最多，但它存在几点不足：</p>
+<ul class="simple">
+<li><p>不适用于非线性关系</p></li>
+<li><p>对异常值（野值）的影响很敏感</p></li>
+<li><p>分析包含行波的问题时需要先考虑时间差</p></li>
+</ul>
+<p>因此，计算Pearson相关系数之间需要先分析数据是否包含非线性关系、是否存在野值、是否有时间滞后现象等特征，再根据实际情况做相应线性化处理。</p>
+</div>
+<div class="section" id="id4">
+<h4>显著性检验<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<p>通常情况下，可以用显著性检验来</p>
+<ul class="simple">
+<li><p>表示两变量之间的差异</p></li>
+<li><p>或者差异是否明显</p></li>
+</ul>
+<p>具体可用两种统计方法来计算：</p>
+<ul class="simple">
+<li><p>Z统计法</p></li>
+<li><p>t统计法</p></li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h4>自由度估计<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<p>由于自然气候学变量通常都具有红噪声，与白噪声不同的是，红噪声在不同时刻的值并不是随机的，这意味着该变量在某一时刻的值会对后序时刻产生影响。因此，在进行相关系数的显著性检验时，为避免自相关性对相关系数置信度估计的影响，需要先估计时间序列的有效自由度。</p>
+<p>估计自由度的方法有很多：</p>
+<ul class="simple">
+<li><p>Dawdy和Matalas(1964)</p></li>
+<li><p>Leith(1973)</p></li>
+<li><p>Bretherton(1999)</p></li>
+</ul>
+</div>
+<div class="section" id="id6">
+<h4>秩相关系数<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
+<p>秩相关系数是一个与分布无关的秩统计参数，由Spearman于1904年提出，用来度量两个变量之间联系的强弱（Zar,2004）。</p>
+<p>与普通的Pearson相关系数相比，Spearman秩相关系数具有较好的鲁棒性，而且对野值不太敏感。</p>
+<p>因此，在实际中，如果怀疑待分析的时间序列中存在异常数据，却又没有办法排除或订正的情况下，更适合用秩相关系数来分析。</p>
+</div>
+<div class="section" id="id7">
+<h4>滞后相关系数<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h4>
+<p>值得注意的是，如果两个待分析的时间序列包含有行波或者任何可以随时间传播的信息，就需要考虑两者之间的相位差，仅按照上述方式简单地计算它们之间的相关系数实际上是不恰当的。</p>
+<p>为解决这样的问题，常常需要考虑两信号的时间差，再计算滞后相关系数。反之，也可以通过计算两时间序列之间不同的时间滞后相关，来查找它们之间可能的相位差。</p>
+<p>日地系统中存在很多类似的情况，研究的要素或变量之间的关系都是有时间滞后的，例如行星际太阳风参数与地磁场变化量之间的相关联系。</p>
+</div>
+</div>
+<div class="section" id="id8">
+<h3>功率谱及时频能量谱分析<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<p>对于时间序列观测数据，目前常用的谱分析方法大致可以分为三种类型：</p>
+<ul class="simple">
+<li><p>第一类是基于线性和平稳性假设的传统分析方法，如短时傅里叶变换（STFT）和快速傅里叶变化（FFT）</p></li>
+<li><p>第二类是针对线性但非平稳数据设计的小波变换（WT）和Wigner-Ville分布</p></li>
+<li><p>第三类是非线性稳态时间序列分析方法（Tong，2001）</p></li>
+</ul>
+<p>然而，实际中获得的大多数观测数据会同时具有非线性和非稳态两个特性，因为无法事先确定基函数，故从这样的数据中分析出精细的物理结构或提炼出精确的关系式绝非易事，即使存在一个较为理想的基函数，也需要通过自适应的方法获得才能有说服力。</p>
+<div class="section" id="id9">
+<h4>功率谱<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h4>
+<p>在处理连续的时间序列时，为了能定量地检测数据中的显著周期，常用的方法是功率谱分析。理论上，计算功率谱要借助于谐波分析来进行，而谐波分析是时间序列信号处理的一种基本手段，又称为调和分析，即用三角函数来拟合时间序列函数，并根据拟合函数来定义信号的周期、相位和振幅。由于实际测量的时间序列中经常包含多种时间尺度的变化成份，在大致确定各变化成份的周期特征后，通常要根据最小二乘法拟合来确定谐波参数，由此获得与实测时间序列最为接近的谐波函数。</p>
+<p>功率谱常用的算法有两种：</p>
+<ul class="simple">
+<li><p>一种是直接计算不同阶数的谐波振幅，称为功率谱，或功率谱密度</p></li>
+<li><p>第二种是落后自相关方法，需要先根据时间序列求落后时间步长的自协方差矩阵，然后进行谐波分析，检测出周期。</p></li>
+</ul>
+</div>
+<div class="section" id="id10">
+<h4>时频能量谱<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h4>
+<p>时频能量谱是分析非线性时间序列最基本的方法之一，可以通过有线时间窗宽的FFT得到。</p>
+</div>
+</div>
+</div>
+<div class="section" id="id11">
+<h2>常用的时频分析方法<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h2>
+<p>在分析非平稳实际信号时，通常需用到一些时频分析技术，通过时间和频率的联合分布函数，以时间-频率空间的能量（或功率）密度来表征信号特征。</p>
+<p>在数字信号处理领域，根据不同的时频联合分布函数，有多种时频分析方法，常规的时频分析方法大致可以归为线性方法和二次变换两大类：</p>
+<ul class="simple">
+<li><p>线性时频分析方法</p>
+<ul>
+<li><p>短时傅里叶变换</p></li>
+<li><p>连续小波变换</p></li>
+</ul>
+</li>
+<li><p>二次时频分析方法</p>
+<ul>
+<li><p>Wigner-Ville分布</p></li>
+<li><p>由Wigner-Ville分布衍生的核函数法。</p></li>
+</ul>
+</li>
+</ul>
+<p>这些传统的分析方法凭借其自身的优势，已广泛地应用于地球物理、环境科学、地质学等领域</p>
+<div class="section" id="id12">
+<h3>短时傅里叶变换<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id13">
+<h3>小波变换<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="wigner-ville">
+<h3>Wigner-Ville分布<a class="headerlink" href="#wigner-ville" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="hht">
+<h2>HHT方法原理及步骤<a class="headerlink" href="#hht" title="Permalink to this headline">¶</a></h2>
+<p>HHT是由huang et al.(1998a)提出的一种新的视频分析方法，由经验模态分解（Eppirical Mode Decomposition, EMD）和Hilbert谱分析（Hilbert Spectrum Analysis, HSA）两个基本部分组成。</p>
+<p>与传统的以傅里叶变化为基础的时频方法不同的是：</p>
+<ul class="simple">
+<li><p>EMD无需使用预先设定的基函数，因此对非稳态数据具有更好的适应性</p></li>
+<li><p>由于不严格受Heisenberg测不准原理的制约，HSA在时间域和频率域可以同时具有较高的分辨率</p></li>
+</ul>
+<p>EMD和HSA的组合提供了一个具有物理意义的时间频率空间的能量描述。</p>
+<div class="section" id="id14">
+<h3>HHT的基本概念<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id15">
+<h4>瞬时频率<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="id16">
+<h4>本征模态函数<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h4>
+</div>
+</div>
+<div class="section" id="id17">
+<h3>经验模态分解<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id18">
+<h3>集合经验模态分解<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="hilbert">
+<h3>Hilbert谱分析<a class="headerlink" href="#hilbert" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id19">
+<h3>HHT尚待解决的问题<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h3>
+<p>在过去的20多年间，HHT方法在诸多自然科学领域获得了广泛的应用。然而，由于缺乏完整的理论体系，HHT方法中还存在以下问题尚待解决：</p>
+<div class="section" id="id20">
+<h4>问题一<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>HHT方法中的自适应数据分解过程基本是凭经验进行的，很难建立系统的理论模型，与之相关的一些数学问题还未完全解决；由于EMD方法依赖于极值分离IMF和信号，如果某高频模不产生极值，就不可能将低振幅分量从高振幅分量中分离出来。</p></li>
+</ul>
+</div>
+<div class="section" id="id21">
+<h4>问题二<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>IMF的唯一性和最优化EMD问题：弄清IMF的唯一性问题实际就是考虑是否能给出更严格的IMF定义，并找到一个可自动实现的算法。</p></li>
+</ul>
+</div>
+<div class="section" id="id22">
+<h4>问题三<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>非线性系统辨识和非平稳过程的预测</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="id23">
+<h2>总结<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h2>
+<p>在分析处理连续的时间序列数据时，除了通过相关性分析研究两个或多个随机变量之间的依赖关系外，常用的方法便是谱分析，它可以客观定量地检测时间序列中的显著的功率或能量分布。然而，在实际中，大多数信号都具有突变性或非稳定变化，除需要了解信号包含的频率成分，还需要关注信号在不同时刻和不同频率范围内的能量分布，FT显然在分析这些信号时不够理想。</p>
+<p>STFT在一定程度上克服了传统FT的全局性缺陷，实现了对信号的局域性分析，但是由于采用固定的窗函数，它并不能适用于所有频段的信号，同时，也不能保证事先设定的窗函数的尺寸与平稳时间尺度相一致。</p>
+<p>WT通过可平移和伸缩的时频窗口，在时域和频域都能较好地体现信号的局部特征，但仍然面临小波基函数难以事先确定的问题。</p>
+<p>HHT方法将自适应的EMD和Hilbert变换相结合，在可能涉及非线性物理过程的非稳态数据分析中体现出很大的优势。</p>
+<ul class="simple">
+<li><p>一方面，由于EMD方法无需事先设定基函数，而是根据信号固有的特性进行分解，这不仅可以使得重构信号时所需要建模的参数得到大量简化，还可以防止能量谱的泄露损失。</p></li>
+<li><p>另一方面，经EMD分解获得的满足Hilbert变化条件的IMF虽不是理论上严格意义的本征值，但却有助于获得信号在频率和时间域的瞬时性质。</p></li>
+</ul>
+<p>对于非平稳的实际信号，理想的方法应同时具备完备性、正交性、局部性和自适应性。HHT方法可以基本满足这四种性质，但是同时也存在其自身的局限性和尚待解决的问题。因此，在对自然观测数据进行具体分析时，需结合考虑实际情况并综合各种方法的处理结果进行客观的讨论。</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "it"
+        },
+        kernelOptions: {
+            kernelName: "it",
+            path: "./theory"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'it'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Fang Shaofeng<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>
