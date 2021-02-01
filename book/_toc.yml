@@ -3,6 +3,7 @@
 - file: introduction
 - file: theory/readme
   sections:
+    - file: theory/transient
     - file: theory/hht
     - file: theory/memd
 - file: implementation/readme
